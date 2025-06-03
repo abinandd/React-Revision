@@ -47,7 +47,7 @@ Passed component can recieve and destructure using {} in other component
 function Avatar({ person, size }) {
   // person and size are available here
 }
-````
+```
 also we can pass props as a single argument 
 
 ```
@@ -55,7 +55,7 @@ function Avatar(props) {
   let person = props.person;
   let size = props.size;
 }
-
+```
 * Don’t miss the pair of { and } curlies inside of ( and ) when declaring props
 * This syntax is called “destructuring” and is equivalent to reading properties from a function parameter
 
