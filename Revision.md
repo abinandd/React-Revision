@@ -1,4 +1,4 @@
-###What is a component 
+### What is a component 
 * A function
 * Returns JSX
 * Reusable part of UI
@@ -6,5 +6,9 @@
 * No need to use () with return if the line is one
 
 ```const Profile =()=>{
-    return <div> This is Profile component <div/>
-}
+    return <div> This is Profile component </div>
+}```
+
+### Using of a component
+
+
