@@ -160,11 +160,11 @@
       });
     }
   }
-})({"aj62f":[function(require,module,exports,__globalThis) {
+})({"iX63W":[function(require,module,exports,__globalThis) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
-var HMR_SERVER_PORT = 1234;
+var HMR_SERVER_PORT = 63538;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "439701173a9199ea";
 var HMR_USE_SSE = false;
@@ -709,7 +709,7 @@ $RefreshReg$(_c, "App");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","react-dom/client":"hrvwu","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","./src/components/firstComponent":"1Fw4h"}],"dVPUn":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","react-dom/client":"hrvwu","./src/components/firstComponent":"1Fw4h","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"dVPUn":[function(require,module,exports,__globalThis) {
 'use strict';
 module.exports = require("ee51401569654d91");
 
@@ -16108,7 +16108,43 @@ module.exports = require("b0f0e6b9e8349dac");
     "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
 })();
 
-},{"6f0162e9ab224cd4":"jMk1U"}],"jnFvT":[function(require,module,exports,__globalThis) {
+},{"6f0162e9ab224cd4":"jMk1U"}],"1Fw4h":[function(require,module,exports,__globalThis) {
+var $parcel$ReactRefreshHelpers$1432 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+$parcel$ReactRefreshHelpers$1432.init();
+var prevRefreshReg = globalThis.$RefreshReg$;
+var prevRefreshSig = globalThis.$RefreshSig$;
+$parcel$ReactRefreshHelpers$1432.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+function Hello() {
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
+        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
+            children: "This is my first component"
+        }, void 0, false, {
+            fileName: "src/components/firstComponent.js",
+            lineNumber: 4,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
+        fileName: "src/components/firstComponent.js",
+        lineNumber: 3,
+        columnNumber: 5
+    }, this);
+}
+_c = Hello;
+exports.default = Hello;
+var _c;
+$RefreshReg$(_c, "Hello");
+
+  $parcel$ReactRefreshHelpers$1432.postlude(module);
+} finally {
+  globalThis.$RefreshReg$ = prevRefreshReg;
+  globalThis.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"dVPUn","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}],"jnFvT":[function(require,module,exports,__globalThis) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -18416,42 +18452,6 @@ function $da9882e673ac146b$var$ErrorOverlay() {
     return null;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"1Fw4h":[function(require,module,exports,__globalThis) {
-var $parcel$ReactRefreshHelpers$1432 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-$parcel$ReactRefreshHelpers$1432.init();
-var prevRefreshReg = globalThis.$RefreshReg$;
-var prevRefreshSig = globalThis.$RefreshSig$;
-$parcel$ReactRefreshHelpers$1432.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-function Hello() {
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
-        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
-            children: "This is my first component"
-        }, void 0, false, {
-            fileName: "src/components/firstComponent.js",
-            lineNumber: 4,
-            columnNumber: 7
-        }, this)
-    }, void 0, false, {
-        fileName: "src/components/firstComponent.js",
-        lineNumber: 3,
-        columnNumber: 5
-    }, this);
-}
-_c = Hello;
-exports.default = Hello;
-var _c;
-$RefreshReg$(_c, "Hello");
-
-  $parcel$ReactRefreshHelpers$1432.postlude(module);
-} finally {
-  globalThis.$RefreshReg$ = prevRefreshReg;
-  globalThis.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"dVPUn","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi"}]},["aj62f","4ZGjQ"], "4ZGjQ", "parcelRequire94c2", {}, null, null, "http://localhost:1234")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["iX63W","4ZGjQ"], "4ZGjQ", "parcelRequire94c2", {}, null, null, "http://localhost:63538")
 
 //# sourceMappingURL=React-Revision.f72d0d54.js.map
