@@ -5,9 +5,11 @@
 * Component name always start with capital letter 
 * No need to use () with return if the line is one
 
-```const Profile =()=>{
+```
+const Profile =()=>{
     return <div> This is Profile component </div>
-}```
+}
+```
 
 ### Using of a component
 
