@@ -33,7 +33,7 @@ export default Hello
 ### JSX Rules
 
 - Always return a single root element , Cover multiple tags or lines in one div or a fragment
-- Every tag should be closed ,self closing tags like img => <img/>
+- Every tag should be closed ,self closing tags like img => ````<img/>````
 - camelCase in almost everywhere => "className"
 - Inside JSX we can include {} to write JavaScript
 - To pass JS objects we need to wrap it in double {{  }}
