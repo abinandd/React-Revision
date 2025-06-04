@@ -241,5 +241,22 @@ behaviour
 
 
 
+# State: A Component's Memory
 
+In React, a state is a built-in object that allows components to store and manage dynamic data that can change over time. When the state of a component changes, React re-renders the component to reflect the new data in the UI.
 
+useState is a hook that allows state variable
+
+````const [state, setState] = useState(initialState)````
+##### Usage
+* Adding state to a component
+* Updating state based on the previous state
+* Updating objects and arrays in state
+* Avoiding recreating the initial state
+* Resetting state with a key
+* Storing information from previous renders
+
+* Always call state in top level of the component
+* The naming covention is like ````[variable, setVariable]````
+* ````[variable,setVariable] ````is array destructering
+* 
