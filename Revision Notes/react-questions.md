@@ -741,20 +741,21 @@ const { count, increment, decrement, reset } = useCounter(10);
 
 ### 36. Which lifecycle hooks in class component are replaced with `useEffect` in functional components?
 
-The `useEffect` Hook in functional components acts as a replacement for several lifecycle methods found in class components:
+The `useEffect` hook in React functional components acts as a **replacement** for several **class lifecycle methods**.
 
 ---
 
-#### ✅ `componentDidMount` → `useEffect(() => {}, [])`
+### ✅ 1. `componentDidMount` → `useEffect(() => {}, [])`
 
-Runs once after the component mounts. You simulate this by passing an **empty dependency array**.
+- This runs **only once** after the component mounts.
+- Equivalent of: `componentDidMount()`
+- Used for **initial data fetching**, setting up **subscriptions**, etc.
 
 ```jsx
 useEffect(() => {
   console.log('Component mounted!');
-  // Fetch data, set up subscriptions, etc.
+  // fetch data or set up subscriptions
 }, []);
----
 
 ### 37. What is Strict Mode in React?
 
