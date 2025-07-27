@@ -739,62 +739,55 @@ const { count, increment, decrement, reset } = useCounter(10);
 
 ---
 
-36. Which lifecycle hooks in class component are replaced with useEffect in functional components?
-The useEffect Hook in functional components can be seen as a replacement for several lifecycle methods found in class components:
+### 36. Which lifecycle hooks in class component are replaced with `useEffect` in functional components?
 
-componentDidMount: Achieved by useEffect with an empty dependency array ([]). The effect runs once after the initial render.
+The `useEffect` Hook in functional components acts as a replacement for several lifecycle methods found in class components:
 
-JavaScript
+---
 
+#### ✅ `componentDidMount` → `useEffect(() => {}, [])`
+
+Runs once after the component mounts. You simulate this by passing an **empty dependency array**.
+
+```jsx
 useEffect(() => {
   console.log('Component mounted!');
   // Fetch data, set up subscriptions, etc.
 }, []);
-componentDidUpdate: Achieved by useEffect with a dependency array containing the values you want to watch for changes. The effect runs after every render where the dependencies have changed.
 
-JavaScript
+### 37. What is Strict Mode in React?
 
-useEffect(() => {
-  console.log('Count or name changed:', count, name);
-}, [count, name]); // Runs when count or name changes
-componentWillUnmount: Achieved by returning a cleanup function from useEffect. This cleanup function runs when the component unmounts, or before the effect runs again if the dependencies change.
+**React.StrictMode** is a tool for highlighting potential problems in a React application. Like a `<Fragment>`, Strict Mode doesn’t render any visible UI — it’s used only in development to activate additional checks and warnings for its descendants.
 
-JavaScript
+---
 
-useEffect(() => {
-  const subscription = subscribeToSomeService();
-  return () => {
-    console.log('Component unmounted or effect re-ran. Cleaning up...');
-    unsubscribeFromSomeService(subscription);
-  };
-}, []);
-shouldComponentUpdate (partially): While useEffect itself doesn't directly replicate shouldComponentUpdate, its functionality (preventing re-renders based on prop/state changes) is achieved in functional components using React.memo (for components) and useMemo/useCallback (for values/functions within components).
+### 🔍 Purpose of Strict Mode:
 
-useEffect effectively consolidates the concerns of mounting, updating, and unmounting into a single API.
+- **Identify unsafe lifecycle methods:**  
+  Helps detect deprecated lifecycle methods in class components (e.g., `componentWillMount`, `componentWillUpdate`) that might break with asynchronous rendering.
 
-37. What is Strict Mode in React?
-React.StrictMode is a tool for highlighting potential problems in an application. Like Fragment, Strict Mode doesn't render any visible UI. It activates additional checks and warnings for its descendants.
+- **Warn about legacy string ref usage:**  
+  Promotes safer alternatives like `callback refs` or `createRef/useRef`.
 
-Purpose:
+- **Detect unexpected side effects:**  
+  Helps identify side effects during rendering that shouldn’t exist (e.g., network calls or modifying DOM directly in render).
 
-Identify unsafe lifecycle methods: Helps you find deprecated lifecycle methods in class components that can cause issues with asynchronous rendering.
+- **Warn about deprecated `findDOMNode`:**  
+  Encourages using `ref` APIs directly for better safety and future compatibility.
 
-Warn about legacy string ref API usage: Promotes the use of callback refs or createRef/useRef.
+- **Detect usage of legacy Context API:**  
+  Encourages using the modern `React.createContext` and `useContext`.
 
-Detect unexpected side effects: Helps identify side effects that occur during rendering that shouldn't.
+- **Warn about mutation outside of setState:**  
+  Helps catch direct state mutations that can lead to bugs (this feature is still experimental).
 
-Warn about deprecated findDOMNode usage: Encourages using refs directly.
+---
 
-Detect legacy context API usage: Encourages the new Context API.
+### 🛠️ How to Use Strict Mode:
 
-Warn about mutation outside of setState: (Still under development/experimental for some warnings).
+You can wrap your entire app or just a part of it with `<React.StrictMode>`:
 
-How to use it:
-
-Wrap your application or a part of your application with <React.StrictMode>:
-
-JavaScript
-
+```js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
@@ -805,36 +798,52 @@ root.render(
     <App />
   </React.StrictMode>
 );
-Important: Strict Mode checks are development-only; they do not impact the production build or performance.
 
-38. What are the different ways to pass data from child component to parent component in React?
-Since data flows unidirectionally (parent to child) in React via props, to pass data from a child component to its parent, you typically rely on callbacks. The parent passes a function (a callback) down to the child as a prop. The child then calls this function, passing the data as arguments, effectively sending the data back up to the parent.
+### 38. What are the different ways to pass data from a child component to a parent component in React?
 
-Here are the primary ways:
+In React, data typically flows **from parent to child** through props. However, when you need to pass data **from a child to its parent**, you rely on indirect communication methods — primarily **callback functions**.
 
-Using Callback Functions (most common and recommended):
+---
 
-The parent component defines a function.
+### ✅ 1. Using Callback Functions (Most Common & Recommended)
 
-The parent passes this function as a prop to the child component.
+- The **parent** defines a function to handle the data.
+- The **parent passes** that function as a prop to the child.
+- The **child calls** the function and passes data as arguments.
 
-The child component invokes this prop function, passing the data it wants to send to the parent as arguments.
+```jsx
+// ParentComponent.js
+function ParentComponent() {
+  const handleChildData = (data) => {
+    console.log("Received from child:", data);
+  };
 
-Using Context API (for less direct parent-child relationships or global state):
+  return <ChildComponent sendDataToParent={handleChildData} />;
+}
 
-While primarily for parent-to-descendant, a dispatch function from useReducer or a setter from useState can be put into context. Child components can then consume this context and call the dispatch/setter function to update state that lives higher up. This isn't direct "child to parent" but rather "child to ancestor state."
+// ChildComponent.js
+function ChildComponent({ sendDataToParent }) {
+  return (
+    <button onClick={() => sendDataToParent("Hello Parent!")}>
+      Send Data
+    </button>
+  );
+}
 
-Using Refs (less common for data, more for imperative actions):
 
-The parent can create a ref and attach it to the child component (if it's a class component or uses forwardRef).
+### 39. Practical Question: How to Send Data from Child to Parent Using Callback Functions?
 
-The parent can then call methods defined on the child component instance, which might expose data. This is generally discouraged for data flow and should be reserved for imperative actions.
+In React, the most common and effective way to send data from a child component to its parent is by using **callback functions**. Here’s a practical example.
 
-39. Practical question: How to send data from child to parent using callback functions?
-1. Parent Component (ParentComponent.js):
+---
 
-JavaScript
+### ✅ Step-by-step Implementation
 
+---
+
+#### 1️⃣ Parent Component (`ParentComponent.js`)
+
+```jsx
 import React, { useState } from 'react';
 import ChildComponent from './ChildComponent';
 
@@ -857,70 +866,26 @@ function ParentComponent() {
 }
 
 export default ParentComponent;
-2. Child Component (ChildComponent.js):
+`
+### 40. Practical Question: How to Send Data from Child Component to Parent Using `useRef`
 
-JavaScript
+---
 
-import React, { useState } from 'react';
+> ⚠️ **Note**: This approach is generally **discouraged** in React because it breaks the declarative and unidirectional data flow model. Refs are mainly used for **imperative actions** (e.g., focusing an input), not state or data management. However, for **rare edge cases**, here's how you can do it.
 
-function ChildComponent({ onDataSend }) {
-  const [inputValue, setInputValue] = useState('');
+---
 
-  const handleChange = (event) => {
-    setInputValue(event.target.value);
-  };
+### ✅ 1. Parent Component (`ParentComponent.js`)
 
-  const handleClick = () => {
-    // Call the prop function, passing the data
-    onDataSend(inputValue);
-    setInputValue(''); // Clear input after sending
-  };
-
-  return (
-    <div>
-      <h3>Child Component</h3>
-      <input
-        type="text"
-        value={inputValue}
-        onChange={handleChange}
-        placeholder="Enter data to send to parent"
-      />
-      <button onClick={handleClick}>Send Data to Parent</button>
-    </div>
-  );
-}
-
-export default ChildComponent;
-Explanation:
-
-In ParentComponent, handleChildData is defined, which will update the parent's messageFromChild state.
-
-This handleChildData function is passed as a prop named onDataSend to ChildComponent.
-
-In ChildComponent, when the "Send Data to Parent" button is clicked, onDataSend (which is handleChildData from the parent) is invoked with the inputValue as an argument.
-
-This causes the handleChildData function in the parent to execute, updating the parent's state with the data from the child.
-
-40. Practical question: How to send the data from child component to parent using useRef?
-This approach is generally not recommended for data flow from child to parent in React, as it breaks the declarative and unidirectional data flow principle. Refs are primarily for imperative interactions with DOM nodes or instances, not for state management or data passing.
-
-However, if you must do it for a very specific, rare imperative case, here's how you could conceptually do it, understanding its downsides:
-
-1. Parent Component (ParentComponent.js):
-
-JavaScript
-
-import React, { useRef } => {
+```js
+import React, { useRef, useState } from 'react';
 import ChildComponent from './ChildComponent';
 
 function ParentComponent() {
   const childRef = useRef(null);
-  const [dataFromChild, setDataFromChild] = useState(''); // State to hold data from child
+  const [dataFromChild, setDataFromChild] = useState('');
 
   const handleGetDataFromChild = () => {
-    // Access the child component's instance (if it's a class component)
-    // or the wrapped DOM element.
-    // If ChildComponent exposes a method to get data, call it.
     if (childRef.current && childRef.current.getSecretData) {
       const data = childRef.current.getSecretData();
       setDataFromChild(`Data from child via ref: "${data}"`);
@@ -933,7 +898,6 @@ function ParentComponent() {
     <div>
       <h2>Parent Component</h2>
       <p>{dataFromChild}</p>
-      {/* Attach the ref to the ChildComponent */}
       <ChildComponent ref={childRef} />
       <button onClick={handleGetDataFromChild}>Get Data from Child (via Ref)</button>
     </div>
@@ -941,77 +905,7 @@ function ParentComponent() {
 }
 
 export default ParentComponent;
-2. Child Component (ChildComponent.js):
-
-This example assumes ChildComponent is a class component or uses forwardRef to expose methods.
-
-Option A: Class Component (simpler for exposing methods)
-
-JavaScript
-
-import React from 'react';
-
-class ChildComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.secretData = "I am secret data from child!";
-  }
-
-  // Method to expose data
-  getSecretData = () => {
-    return this.secretData;
-  };
-
-  render() {
-    return (
-      <div>
-        <h3>Child Component (Class)</h3>
-        <p>I have some internal data.</p>
-      </div>
-    );
-  }
-}
-
-export default ChildComponent;
-Option B: Functional Component with useImperativeHandle and forwardRef (more complex but for functional components)
-
-JavaScript
-
-import React, { useRef, useImperativeHandle, forwardRef, useState } from 'react';
-
-const ChildComponent = forwardRef((props, ref) => {
-  const [internalData, setInternalData] = useState("I am internal data from child!");
-
-  // Expose specific functions or values to the parent via the ref
-  useImperativeHandle(ref, () => ({
-    getSecretData: () => {
-      return internalData;
-    },
-    updateInternalData: (newData) => {
-      setInternalData(newData);
-    }
-  }));
-
-  return (
-    <div>
-      <h3>Child Component (Functional with forwardRef)</h3>
-      <p>My current internal data: {internalData}</p>
-    </div>
-  );
-});
-
-export default ChildComponent;
-Why this is generally discouraged:
-
-Breaks Unidirectional Data Flow: The parent directly reaches into the child to pull data, making the data flow less predictable.
-
-Reduced Encapsulation: Child components are less encapsulated if their internal state or methods are exposed via refs.
-
-Harder to Debug: It becomes less clear where data changes originate.
-
-Less Idiomatic React: React's strength is in its declarative nature; refs are for imperative escapes.
-
-Always prefer callback functions for passing data from child to parent.
+`
 
 41. How do you optimize your React application?
 Optimizing React applications involves several strategies to improve performance (faster loading, smoother interactions, reduced resource usage) and user experience.
