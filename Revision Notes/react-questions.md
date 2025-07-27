@@ -5,7 +5,7 @@ React is an open-source JavaScript library for building user interfaces (UIs), p
 useMemo is a React Hook that memoizes the result of a function call. It's used for performance optimization. It only recomputes the memoized value when one of its dependencies has changed. This can prevent expensive calculations from being performed on every render if the inputs to those calculations haven't changed.
 
 Syntax:
-```
+```JS
 const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
 ```
 The first argument is a function that computes the value.
@@ -36,7 +36,7 @@ Strong Community Support: A large and active community provides extensive resour
 JSX (JavaScript XML) is a syntax extension for JavaScript recommended by React to describe what the UI should look like. It allows you to write HTML-like code directly within your JavaScript files. This combines the templating capabilities of HTML with the power of JavaScript, making it more intuitive to create React elements.
 
 Example:
-```
+```Js
 const element = <h1>Hello, JSX!</h1>;
 ```
 Behind the scenes, Babel (a JavaScript compiler) transforms JSX into regular JavaScript calls to React.createElement().
@@ -86,7 +86,7 @@ componentDidCatch()
 React Fragments allow you to group a list of children without adding extra nodes to the DOM. Before Fragments, if you wanted to return multiple elements from a component's render method, you had to wrap them in a single parent element (like a div). This could sometimes lead to unnecessary div elements in the DOM, potentially affecting layout and performance.
 
 Syntax:
-```
+```Js
 import React, { Fragment } from 'react';
 
 function MyComponent() {
@@ -113,7 +113,7 @@ function AnotherComponent() {
 Props (short for "properties") are a mechanism for passing data from a parent component to a child component in React. They are read-only, meaning a child component should never modify the props it receives directly. This ensures a unidirectional data flow, making the application's data predictable.
 
 Example:
-```
+```Js
 // Parent Component
 function Parent() {
   const name = "Alice";
@@ -364,317 +364,223 @@ This helps avoid unnecessary re-renders, boosting performance in certain cases.
   ```js
   this.state.user.name = "New Name"; // ⚠️ Won't be detected
 
-19. What are Ref's in React?
-Refs ("references") in React provide a way to access DOM nodes or React elements created in the render method. They are a way to "escape" the typical declarative data flow and interact directly with the underlying DOM element or component instance.
 
-When to use Refs:
+## 19. What are Refs in React?
 
-Managing focus, text selection, or media playback.
+Refs (short for "references") let you directly interact with a DOM element or React element created in the render method.
 
-Triggering imperative animations.
+### Real-world example:
+You want to focus an input box automatically when the page loads.
 
-Integrating with third-party DOM libraries.
-
-Ways to create Refs:
-
-React.createRef() (for class components):
-
-JavaScript
-
-class MyComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.myRef = React.createRef();
-  }
-
-  componentDidMount() {
-    this.myRef.current.focus(); // Access the DOM node
-  }
-
-  render() {
-    return <input type="text" ref={this.myRef} />;
-  }
-}
-useRef() (for functional components):
-
-JavaScript
-
+```jsx
 import React, { useRef, useEffect } from 'react';
 
-function MyFunctionalComponent() {
+function FocusInput() {
   const inputRef = useRef(null);
 
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
-  return <input type="text" ref={inputRef} />;
+  return <input ref={inputRef} type="text" placeholder="Focus me on load" />;
 }
+```
 
-20. What is meant by forwardRef?
-React.forwardRef is a React higher-order component (HOC) that lets you "forward" a ref from a parent component down to a child component, specifically to a DOM element or a class component instance that it renders. This is useful when a parent needs to imperatively interact with a DOM element that's rendered by one of its children.
+---
 
-Normally, if you pass a ref prop to a custom component, you'll get a ref to the component instance itself, not the DOM element inside it. forwardRef solves this.
+## 20. What is forwardRef in React?
 
-Example:
+`forwardRef` allows a parent component to pass a `ref` to a child’s DOM node.
 
-JavaScript
+### Real-world example:
+You create a custom input component but still want the parent to be able to focus it.
 
+```jsx
 import React, { useRef, useEffect, forwardRef } from 'react';
 
-// Child component that forwards the ref to its input
 const MyInput = forwardRef((props, ref) => {
-  return <input type="text" ref={ref} {...props} />;
+  return <input ref={ref} {...props} />;
 });
 
-// Parent component that uses the forwarded ref
-function App() {
-  const inputRef = useRef(null);
+function ParentComponent() {
+  const ref = useRef(null);
 
   useEffect(() => {
-    inputRef.current.focus();
+    ref.current.focus();
   }, []);
 
-  return (
-    <div>
-      <p>Click the button to focus the input:</p>
-      <MyInput ref={inputRef} placeholder="Type something..." />
-      <button onClick={() => inputRef.current.focus()}>Focus Input</button>
-    </div>
-  );
+  return <MyInput ref={ref} placeholder="Auto focus" />;
 }
+```
 
-21. What are Error Boundaries?
-Error Boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of crashing the entire application. They were introduced in React 16.
+---
 
-Key characteristics:
+## 21. What are Error Boundaries?
 
-They catch errors during rendering, in lifecycle methods, and in constructors of the whole tree below them.
+Error Boundaries are components that catch JavaScript errors in their children and display a fallback UI.
 
-They don't catch errors inside event handlers, asynchronous code (e.g., setTimeout, requestAnimationFrame), or server-side rendering.
+### Real-world example:
+Wrap a component so that if it crashes, the app doesn't crash.
 
-You implement them as a class component with at least one of these lifecycle methods: static getDerivedStateFromError() or componentDidCatch().
-
-Example:
-
-JavaScript
-
+```jsx
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error) {
-    // Update state so the next render shows the fallback UI.
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 
   componentDidCatch(error, errorInfo) {
-    // You can also log the error to an error reporting service
-    console.error("Uncaught error:", error, errorInfo);
+    console.error("Caught error:", error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
-      // You can render any custom fallback UI
-      return <h1>Something went wrong.</h1>;
+      return <h2>Something went wrong.</h2>;
     }
-
     return this.props.children;
   }
 }
+```
 
-// Usage:
-<ErrorBoundary>
-  <MyProblematicComponent />
-</ErrorBoundary>
+---
 
-22. What are Higher-Order Components (HOCs) in React?
-A Higher-Order Component (HOC) is an advanced technique in React for reusing component logic. A HOC is a function that takes a component as an argument and returns a new component with enhanced functionality. They are a pattern derived from the concept of higher-order functions in JavaScript.
+## 22. What are Higher-Order Components (HOCs)?
 
-Structure:
+A Higher-Order Component is a function that takes a component and returns a new component with extra features.
 
-JavaScript
+### Real-world example:
+You have many components that need logging. Wrap them in an HOC.
 
-const withSomeFeature = (WrappedComponent) => {
-  return class extends React.Component {
-    // ... add some logic, state, props
-    render() {
-      return <WrappedComponent {...this.props} someExtraProp={someValue} />;
-    }
+```jsx
+function withLogger(WrappedComponent) {
+  return function(props) {
+    console.log("Rendering with props:", props);
+    return <WrappedComponent {...props} />;
   };
-};
+}
+```
 
-// Usage:
-const EnhancedComponent = withSomeFeature(MyOriginalComponent);
-Common Use Cases:
+---
 
-Code Reusability: Share common logic, state, or presentation concerns across multiple components.
+## 23. Controlled vs Uncontrolled Components
 
-Prop Manipulation: Add, remove, or modify props passed to the wrapped component.
+| Feature                | Controlled Component                         | Uncontrolled Component                       |
+|------------------------|----------------------------------------------|----------------------------------------------|
+| Value Managed By       | React state                                  | DOM (via ref)                                |
+| Updates Through        | onChange + setState                          | Direct DOM access                            |
+| Example                | `<input value={state} onChange={...} />`     | `<input ref={inputRef} />`                   |
+| When to Use            | Most cases with validations                  | Simple cases, file inputs                    |
 
-State Abstraction: Abstract stateful logic away from presentational components.
+---
 
-Conditional Rendering: Control when a component renders based on certain conditions.
+## 24. What is useCallback?
 
-Access Control/Authentication: Wrap components to check user permissions.
+`useCallback` memoizes a function so it's not recreated on every render unless dependencies change.
 
-While HOCs are still valid, functional components and Hooks have become the preferred way to achieve similar logic reuse in modern React, often leading to cleaner code.
+### Real-world example:
+You pass a function to a child component wrapped in `React.memo`.
 
-23. What are the differences between controlled and uncontrolled components?
+```jsx
+const memoizedFn = useCallback(() => {
+  console.log("Called only when 'value' changes");
+}, [value]);
+```
+## 25. What are the differences between useMemo and useCallback?
 
-The distinction between controlled and uncontrolled components primarily applies to HTML form elements (like input, textarea, select) in React. It dictates how their values are managed.
+| Feature         | useMemo                                | useCallback                                  |
+|----------------|-----------------------------------------|----------------------------------------------|
+| What it memoizes | A **value** (the result of a function). | A **function** (the function itself).         |
+| Return Value     | The memoized **value**.                | The memoized **function**.                   |
+| Purpose          | Avoid expensive recalculations.        | Prevent function re-creation unnecessarily.  |
+| Use Case         | For expensive **computations**.        | For memoizing **callback functions**.        |
 
-Feature	Controlled Components	Uncontrolled Components
-Value Management	Form element's value is controlled by React state.	Form element's value is managed by the DOM itself.
-Source of Truth	React state is the single source of truth.	The DOM is the single source of truth.
-Value Update	onChange event handler updates React state, which then re-renders the component with the new value.	ref is used to get the current value from the DOM when needed (e.g., on form submission).
-Predictability	Highly predictable behavior, easy to validate and manipulate programmatically.	Less predictable, as React doesn't directly manage the value.
-Validation	Easier to implement real-time validation, as the value is always in state.	Validation often happens on form submission.
-Default Value	Use value prop (for continuous control).	Use defaultValue prop (for initial value only).
-Use Cases	Most common and recommended for almost all form elements where you need immediate control over the input.	Useful for simple forms, file inputs, or when integrating with non-React code.
-Example (Input)	<input type="text" value={this.state.name} onChange={this.handleChange} />	<input type="text" ref={this.inputRef} />
+💡 **In Simple Terms:**  
+- `useMemo` is used to remember a **value**.  
+- `useCallback` is used to remember a **function**.
 
-Export to Sheets
-24. What is useCallback?
-useCallback is a React Hook that memoizes a function. It returns a memoized version of the callback function that only changes if one of the dependencies has changed. This is particularly useful when passing callbacks to optimized child components that rely on referential equality to prevent unnecessary re-renders (e.g., components wrapped in React.memo).
+🧠 **Example:** Imagine you're calculating the total price of items in a cart. Use `useMemo` to cache the total so it's not recalculated every time. Use `useCallback` to pass a memoized function to a button's `onClick`.
 
-Syntax:
+---
 
-JavaScript
+## 26. What are keys in React?
 
-const memoizedCallback = useCallback(
-  () => {
-    doSomething(a, b);
-  },
-  [a, b], // dependencies
-);
-The first argument is the function you want to memoize.
+**Keys** are unique identifiers for elements in a list in React. They help React identify which items changed, were added, or removed.
 
-The second argument is an array of dependencies. The function will only be re-created if any of these dependencies change.
+### 🔍 Why Use Keys?
+- Improve performance by minimizing DOM updates.
+- Keep component state consistent during list changes.
 
-Purpose: Prevents unnecessary re-creation of functions on every render, which in turn can prevent child components from re-rendering if they receive the function as a prop and are memoized.
+🧠 **Real-World Example:**  
+Think of a list of TODOs. If one is deleted, React needs a way to know **which** one. A unique `id` helps it track the item.
 
-25. What are the differences between useMemo and useCallback?
-Feature	useMemo	useCallback
-What it memoizes	A value (the result of a function call).	A function (the function itself).
-Return Value	The memoized value.	The memoized function.
-Purpose	Prevents expensive calculations from re-running unnecessarily.	Prevents unnecessary re-creation of functions, helping with referential equality for child components.
-Use Case	When you have a computationally expensive function and want to cache its result.	When passing a callback function to a child component (especially React.memo'ized ones) to prevent unnecessary re-renders of the child.
-
-Export to Sheets
-In essence:
-
-useMemo is for values.
-
-useCallback is for functions.
-
-26. What are keys in React?
-Keys are special string attributes that you need to include when creating lists of elements in React. They help React identify which items have changed, are added, or are removed. Keys should be unique among siblings in the list.
-
-Why are keys important?
-
-Efficient Updates: React uses keys to efficiently update the UI when the order or content of a list changes. Without keys, React might re-render or reorder elements inefficiently, leading to performance issues and potential bugs (e.g., incorrect state or unintended side effects).
-
-Stable Identity: Keys provide a stable identity to each component or DOM element in the list. This helps React know which specific item corresponds to which piece of data.
-
-Example:
-
-JavaScript
-
-function ItemList({ items }) {
+```jsx
+function TodoList({ todos }) {
   return (
     <ul>
-      {items.map(item => (
-        <li key={item.id}>{item.name}</li> // 'item.id' should be unique
-      ))}
+      {todos.map(todo => <li key={todo.id}>{todo.text}</li>)}
     </ul>
   );
 }
-Important considerations:
+```
 
-Unique within siblings: Keys only need to be unique among their immediate siblings, not globally unique.
+⚠️ Avoid using array indexes as keys if items are reordered or removed.
 
-Stable keys: Do not use array indexes as keys if the order of items can change, or if items can be added/removed from the middle of the list. This can lead to performance problems and bugs. Use a stable, unique ID from your data if available.
+---
 
-27. What is Lazy loading in React?
-Lazy loading (or code splitting) in React is a technique that allows you to load parts of your application's code only when they are actually needed, rather than loading everything upfront. This helps reduce the initial bundle size, leading to faster loading times and improved performance, especially for large applications.
+## 27. What is Lazy Loading in React?
 
-React provides React.lazy() and Suspense for implementing lazy loading at the component level.
+**Lazy loading** is a way to load components only when needed. It helps reduce the size of the initial load.
 
-How it works:
+### 📦 Tools:
+- `React.lazy()` – for dynamic import of components.
+- `Suspense` – to show fallback UI while loading.
 
-React.lazy(): A function that takes a function as an argument. This function should return a Promise that resolves to a module containing a React component.
+🧠 **Real-World Example:**  
+You don't need to load the "About" page until the user visits it.
 
-Suspense: A component that wraps your lazy-loaded components. It allows you to specify a fallback UI (like a loading spinner) that will be displayed while the lazy-loaded component is being loaded.
+```jsx
+const About = React.lazy(() => import('./About'));
 
-Example:
+<Suspense fallback={<div>Loading...</div>}>
+  <About />
+</Suspense>
+```
 
-JavaScript
+---
 
-import React, { Suspense, lazy } from 'react';
+## 28. What is Suspense in React?
 
-// Lazy load the About component
-const About = lazy(() => import('./About'));
-const Home = lazy(() => import('./Home'));
+**Suspense** lets you show a fallback UI (like a loader) while waiting for components to load.
 
-function App() {
-  return (
-    <div>
-      <nav>
-        {/* Navigation */}
-      </nav>
-      <Suspense fallback={<div>Loading...</div>}>
-        {/* Render components based on route or state */}
-        <Home />
-        <About />
-      </Suspense>
-    </div>
-  );
-}
-28. What is Suspense in React?
-Suspense is a React component that lets you "wait" for some code to load and declaratively specify a loading indicator (fallback UI) while that code is being loaded. It works in conjunction with React.lazy() for code splitting, and is also designed to work with other asynchronous operations (like data fetching) in the future.
+🧠 **Real-World Example:**  
+A spinner while a profile page loads.
 
-When a component wrapped in Suspense is trying to render something that isn't ready (e.g., a lazy-loaded component that hasn't finished loading its code), the Suspense boundary will display its fallback prop instead of the component that's still loading. Once the component is ready, it will render as normal.
+```jsx
+<Suspense fallback={<div>Loading...</div>}>
+  <ProfilePage />
+</Suspense>
+```
 
-Example:
+Suspense works best with lazy-loaded components and in the future with data fetching.
 
-JavaScript
+---
 
-import React, { Suspense, lazy } from 'react';
+## 29. What are Custom Hooks?
 
-const MyLazyComponent = lazy(() => import('./MyLazyComponent'));
+**Custom Hooks** are functions that start with `use` and let you reuse logic between components.
 
-function App() {
-  return (
-    <div>
-      <h1>My App</h1>
-      <Suspense fallback={<div>Loading My Component...</div>}>
-        <MyLazyComponent />
-      </Suspense>
-    </div>
-  );
-}
-29. What are custom hooks?
-Custom Hooks are JavaScript functions whose names start with "use" and that can call other Hooks (like useState, useEffect, useContext, etc.). They are a mechanism for extracting and reusing stateful logic and side effects from functional components. They allow you to share reusable logic without resorting to render props or Higher-Order Components.
+### ✅ Benefits:
+- Reusable logic
+- Cleaner components
+- Easier testing
 
-Benefits:
+🧠 **Real-World Example:** A custom hook to get window width:
 
-Reusability: Share complex logic across multiple components.
-
-Cleaner Components: Keep components focused on rendering by abstracting away logic.
-
-Improved Readability: Logic related to a specific feature can be co-located.
-
-Testability: Custom hooks are often easier to test in isolation.
-
-Example:
-
-JavaScript
-
-import { useState, useEffect } from 'react';
-
+```jsx
 function useWindowWidth() {
   const [width, setWidth] = useState(window.innerWidth);
 
@@ -682,379 +588,157 @@ function useWindowWidth() {
     const handleResize = () => setWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []); // Empty dependency array means this effect runs once on mount and cleans up on unmount
+  }, []);
 
   return width;
 }
+```
 
-// Using the custom hook in a component
-function MyComponent() {
-  const windowWidth = useWindowWidth();
-  return <p>Window width: {windowWidth}px</p>;
-}
-30. What is useReducer hook?
-useReducer is a React Hook that provides an alternative to useState for managing more complex state logic in functional components. It's often preferred when state transitions are more intricate, involve multiple sub-values, or when the next state depends on the previous one. It's conceptually similar to Redux.
+---
 
-Syntax:
+## 30. What is useReducer Hook?
 
-JavaScript
+**useReducer** is a hook used for managing complex state logic in React.
 
-const [state, dispatch] = useReducer(reducer, initialState, init);
-reducer: A function that takes the current state and an action and returns the newState.
+### 🔁 How It Works:
+- You define a reducer function: `(state, action) => newState`
+- `dispatch(action)` triggers the update
 
-initialState: The initial state value.
+🧠 **Real-World Example:** A counter using useReducer
 
-init (optional): An initializer function for lazy initial state.
-
-How it works:
-
-You define a reducer function that describes how the state changes in response to different actions.
-
-You call dispatch with an action object to trigger a state update.
-
-The reducer function is executed with the current state and the action, returning the new state.
-
-React re-renders the component with the new state.
-
-Example:
-
-JavaScript
-
-import React, { useReducer } from 'react';
-
+```jsx
 const initialState = { count: 0 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'increment':
-      return { count: state.count + 1 };
-    case 'decrement':
-      return { count: state.count - 1 };
-    case 'reset':
-      return { count: 0 };
-    default:
-      throw new Error();
+    case 'increment': return { count: state.count + 1 };
+    case 'decrement': return { count: state.count - 1 };
+    default: return state;
   }
 }
 
-function Counter() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+const [state, dispatch] = useReducer(reducer, initialState);
+```
 
-  return (
-    <>
-      Count: {state.count}
-      <button onClick={() => dispatch({ type: 'increment' })}>Increment</button>
-      <button onClick={() => dispatch({ type: 'decrement' })}>Decrement</button>
-      <button onClick={() => dispatch({ type: 'reset' })}>Reset</button>
-    </>
-  );
-}
-31. What are Portals in React?
-React Portals provide a way to render children into a DOM node that exists outside the DOM hierarchy of the parent component. Normally, a component's render method returns React elements that are rendered as children of the component's parent DOM node. However, with Portals, you can break out of this hierarchy.
+---
 
-When to use Portals:
+## 31. What are Portals in React?
 
-Portals are useful for situations where a component's visual output needs to be physically placed in a different part of the DOM tree for styling or accessibility reasons, even though it's logically part of a component. Common use cases include:
+**Portals** let you render components outside their normal DOM hierarchy.
 
-Modals/Dialogs: To ensure modals are rendered directly under body to avoid z-index issues, overflow hiding, or other styling conflicts with parent components.
+### 📌 Use Cases:
+- Modals
+- Tooltips
+- Popups
 
-Tooltips/Popovers: To position them correctly relative to the viewport.
+🧠 **Real-World Example:** A modal rendered outside the main app:
 
-Loading Spinners: That overlay the entire page.
+```jsx
+ReactDOM.createPortal(<ModalContent />, document.getElementById('modal-root'));
+```
 
-Syntax:
+---
 
-JavaScript
+## 32. What is Context in React?
 
-ReactDOM.createPortal(child, container);
-child: Any renderable React child (element, string, fragment, etc.).
+**Context** lets you pass data without using props at every level.
 
-container: A DOM element that exists outside the parent component's DOM hierarchy.
+### 🧭 When to Use:
+- Auth info
+- Theme toggles
+- Language settings
 
-Example:
+🧠 **Real-World Example:** A theme context shared across components.
 
-JavaScript
-
-import React, { useEffect, useRef } from 'react';
-import ReactDOM from 'react-dom';
-
-const modalRoot = document.getElementById('modal-root'); // Assuming a div with id 'modal-root' exists in your index.html
-
-function Modal({ children }) {
-  const elRef = useRef(null);
-  if (!elRef.current) {
-    elRef.current = document.createElement('div');
-  }
-
-  useEffect(() => {
-    modalRoot.appendChild(elRef.current);
-    return () => modalRoot.removeChild(elRef.current);
-  }, []);
-
-  return ReactDOM.createPortal(children, elRef.current);
-}
-
-function App() {
-  const [showModal, setShowModal] = React.useState(false);
-
-  return (
-    <div>
-      <h1>My App</h1>
-      <button onClick={() => setShowModal(true)}>Show Modal</button>
-      {showModal && (
-        <Modal>
-          <div style={{
-            position: 'fixed',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            backgroundColor: 'white',
-            padding: '20px',
-            border: '1px solid black',
-            zIndex: 1000
-          }}>
-            <h2>This is a Modal!</h2>
-            <p>I'm rendered outside the app's div.</p>
-            <button onClick={() => setShowModal(false)}>Close Modal</button>
-          </div>
-        </Modal>
-      )}
-    </div>
-  );
-}
-32. What is context in React?
-React Context provides a way to pass data through the component tree without having to pass props down manually at every level (solving prop drilling). It's designed to share "global" data (like the current authenticated user, theme, or preferred language) that can be considered "global" for a tree of React components.
-
-When to use Context:
-
-When data needs to be accessed by many components at different nesting levels.
-
-For themes, user authentication status, language settings, etc.
-
-Core concepts:
-
-React.createContext(): Creates a Context object. It returns an object with a Provider and a Consumer component.
-
-Provider Component: Renders the context provider. It accepts a value prop that will be passed down to all consumers of this context.
-
-Consumer Component (Older): A component that subscribes to context changes. (Largely replaced by useContext hook).
-
-useContext() Hook (Modern): The recommended way to consume context in functional components. It takes a Context object (the value returned from React.createContext) and returns the current context value for that context.
-
-33. Practical question: Give an example of context API usage?
-Let's create a simple theme toggler using Context API.
-
-1. Create a Context:
-
-src/ThemeContext.js
-
-JavaScript
-
-import React from 'react';
-
-// Create a Context object with a default value
+```jsx
 const ThemeContext = React.createContext('light');
 
-export default ThemeContext;
-2. Create a Provider Component:
-
-src/ThemeProvider.js
-
-JavaScript
-
-import React, { useState } from 'react';
-import ThemeContext from './ThemeContext';
-
-function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState('light');
-
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
-  };
-
-  const contextValue = {
-    theme,
-    toggleTheme,
-  };
-
+function App() {
   return (
-    <ThemeContext.Provider value={contextValue}>
-      {children}
+    <ThemeContext.Provider value="dark">
+      <MyComponent />
     </ThemeContext.Provider>
   );
 }
 
-export default ThemeProvider;
-3. Create a Consumer Component (using useContext):
+function MyComponent() {
+  const theme = useContext(ThemeContext);
+}
+```
 
-src/ThemeToggler.js
+---
 
-JavaScript
+## 33. Example: Using Context API (Theme Toggle)
 
-import React, { useContext } from 'react';
-import ThemeContext from './ThemeContext';
+### 📁 ThemeContext.js
+```jsx
+const ThemeContext = React.createContext('light');
+export default ThemeContext;
+```
 
+### 🧠 ThemeProvider.js
+```jsx
+function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState('light');
+  const toggleTheme = () => setTheme(t => t === 'light' ? 'dark' : 'light');
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+```
+
+### 🧩 ThemeToggler.js
+```jsx
 function ThemeToggler() {
   const { theme, toggleTheme } = useContext(ThemeContext);
-
-  return (
-    <button onClick={toggleTheme}>
-      Switch to {theme === 'light' ? 'Dark' : 'Light'} Theme
-    </button>
-  );
+  return <button onClick={toggleTheme}>Switch to {theme === 'light' ? 'Dark' : 'Light'} Theme</button>;
 }
+```
 
-export default ThemeToggler;
-4. Create a Themed Component:
+---
 
-src/ThemedContent.js
+## 34. What is the callback in setState()?
 
-JavaScript
+In class components, `setState` is async. The **callback** runs after the state is updated.
 
-import React, { useContext } from 'react';
-import ThemeContext from './ThemeContext';
+🧠 **Real-World Example:**
 
-function ThemedContent() {
-  const { theme } = useContext(ThemeContext);
+```jsx
+this.setState({ count: this.state.count + 1 }, () => {
+  console.log("Updated count:", this.state.count);
+});
+```
 
-  const style = {
-    backgroundColor: theme === 'light' ? '#eee' : '#333',
-    color: theme === 'light' ? '#333' : '#eee',
-    padding: '20px',
-    borderRadius: '8px',
-  };
+Use the callback to safely access the updated state or trigger side effects.
 
-  return (
-    <div style={style}>
-      <h2>Current Theme: {theme}</h2>
-      <p>This content's style changes based on the theme.</p>
-    </div>
-  );
-}
+---
 
-export default ThemedContent;
-5. Integrate into your App:
+## 35. Example: Custom Hook for Counter
 
-src/App.js
-
-JavaScript
-
-import React from 'react';
-import ThemeProvider from './ThemeProvider';
-import ThemeToggler from './ThemeToggler';
-import ThemedContent from './ThemedContent';
-
-function App() {
-  return (
-    <ThemeProvider>
-      <div style={{ textAlign: 'center', padding: '20px' }}>
-        <h1>Context API Theme Example</h1>
-        <ThemeToggler />
-        <br />
-        <ThemedContent />
-      </div>
-    </ThemeProvider>
-  );
-}
-
-export default App;
-This example demonstrates how ThemeProvider makes the theme and toggleTheme function available to ThemeToggler and ThemedContent without explicitly passing them as props.
-
-34. What is the purpose of callback function as an argument of setState()?
-In React class components, setState() is asynchronous. This means that React may batch multiple setState() calls into a single update for performance. Because of this, if you try to read the state immediately after calling setState(), you might not get the updated value.
-
-The callback function as an argument to setState() allows you to execute code after the state update has been applied and the component has potentially re-rendered.
-
-Syntax:
-
-JavaScript
-
-this.setState(updater, callback);
-updater: An object or a function that returns the new state.
-
-callback: A function that will be executed after setState has completed and the component has re-rendered.
-
-Purpose:
-
-To perform side effects or operations that depend on the updated state.
-
-To ensure you're working with the latest state value, especially when the next operation relies on it.
-
-Example:
-
-JavaScript
-
-class MyComponent extends React.Component {
-  state = {
-    count: 0
-  };
-
-  handleClick = () => {
-    this.setState({ count: this.state.count + 1 }, () => {
-      // This callback runs *after* count has been updated and re-rendered
-      console.log('Count after update:', this.state.count);
-      // You could also do other operations here, like fetching data based on new state
-    });
-    console.log('Count immediately after setState:', this.state.count); // Might log the old count
-  };
-
-  render() {
-    return (
-      <div>
-        <p>Count: {this.state.count}</p>
-        <button onClick={this.handleClick}>Increment</button>
-      </div>
-    );
-  }
-}
-For functional components using useState, useEffect is typically used for side effects that depend on state changes.
-
-35. Practical question: create a custom hook for increment/decrement counter?
-JavaScript
-
+```jsx
 import { useState, useCallback } from 'react';
 
 function useCounter(initialValue = 0) {
   const [count, setCount] = useState(initialValue);
 
-  // Memoize increment and decrement functions to prevent unnecessary re-renders
-  // if they are passed down to child components
-  const increment = useCallback(() => {
-    setCount(prevCount => prevCount + 1);
-  }, []); // Empty dependency array means this function is created once
-
-  const decrement = useCallback(() => {
-    setCount(prevCount => prevCount - 1);
-  }, []); // Empty dependency array means this function is created once
-
-  const reset = useCallback(() => {
-    setCount(initialValue);
-  }, [initialValue]); // Reset depends on initialValue, so recreate if initialValue changes
+  const increment = useCallback(() => setCount(c => c + 1), []);
+  const decrement = useCallback(() => setCount(c => c - 1), []);
+  const reset = useCallback(() => setCount(initialValue), [initialValue]);
 
   return { count, increment, decrement, reset };
 }
+```
 
-export default useCounter;
+Use it like:
 
-// --- How to use it in a component ---
+```jsx
+const { count, increment, decrement, reset } = useCounter(10);
+```
 
-// import React from 'react';
-// import useCounter from './useCounter'; // Assuming the hook is in useCounter.js
+---
 
-// function CounterComponent() {
-//   const { count, increment, decrement, reset } = useCounter(10); // Start from 10
-
-//   return (
-//     <div>
-//       <p>Count: {count}</p>
-//       <button onClick={increment}>Increment</button>
-//       <button onClick={decrement}>Decrement</button>
-//       <button onClick={reset}>Reset</button>
-//     </div>
-//   );
-// }
-
-// export default CounterComponent;
 36. Which lifecycle hooks in class component are replaced with useEffect in functional components?
 The useEffect Hook in functional components can be seen as a replacement for several lifecycle methods found in class components:
 
