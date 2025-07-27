@@ -802,6 +802,7 @@ root.render(
   </React.StrictMode>
 );
 
+```` 
 ### 38. What are the different ways to pass data from a child component to a parent component in React?
 
 In React, data typically flows **from parent to child** through props. However, when you need to pass data **from a child to its parent**, you rely on indirect communication methods — primarily **callback functions**.
