@@ -790,7 +790,7 @@ useEffect(() => {
 
 You can wrap your entire app or just a part of it with `<React.StrictMode>`:
 
-```js
+````js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
@@ -815,7 +815,7 @@ In React, data typically flows **from parent to child** through props. However, 
 - The **parent passes** that function as a prop to the child.
 - The **child calls** the function and passes data as arguments.
 
-```jsx
+````jsx
 // ParentComponent.js
 function ParentComponent() {
   const handleChildData = (data) => {
@@ -833,7 +833,7 @@ function ChildComponent({ sendDataToParent }) {
     </button>
   );
 }
-
+````
 
 ### 39. Practical Question: How to Send Data from Child to Parent Using Callback Functions?
 
@@ -847,7 +847,7 @@ In React, the most common and effective way to send data from a child component 
 
 #### 1️⃣ Parent Component (`ParentComponent.js`)
 
-```jsx
+````jsx
 import React, { useState } from 'react';
 import ChildComponent from './ChildComponent';
 
@@ -870,18 +870,15 @@ function ParentComponent() {
 }
 
 export default ParentComponent;
-`
-### 40. Practical Question: How to Send Data from Child Component to Parent Using `useRef`
 
----
+
+### 40. Practical Question: How to Send Data from Child Component to Parent Using `useRef`
 
 > ⚠️ **Note**: This approach is generally **discouraged** in React because it breaks the declarative and unidirectional data flow model. Refs are mainly used for **imperative actions** (e.g., focusing an input), not state or data management. However, for **rare edge cases**, here's how you can do it.
 
----
-
 ### ✅ 1. Parent Component (`ParentComponent.js`)
 
-```js
+````js
 import React, { useRef, useState } from 'react';
 import ChildComponent from './ChildComponent';
 
@@ -909,9 +906,9 @@ function ParentComponent() {
 }
 
 export default ParentComponent;
-`
+````
 
-41. How do you optimize your React application?
+### 41.How do you optimize your React application?
 Optimizing React applications involves several strategies to improve performance (faster loading, smoother interactions, reduced resource usage) and user experience.
 
 Code Splitting / Lazy Loading:
@@ -976,14 +973,15 @@ Performance Monitoring:
 
 Use browser developer tools (Performance tab) and React DevTools Profiler to identify bottlenecks.
 
-42. How would you consume a RESTful JSON API in ReactJS?
+
+### 42. How would you consume a RESTful JSON API in ReactJS?
 Consuming a RESTful JSON API in ReactJS typically involves making HTTP requests to fetch, send, or update data, and then managing that data within your component's state.
 
 Here's a common approach using the fetch API (built-in browser API) and useEffect and useState hooks:
 
 1. Basic Data Fetching (GET request):
 
-JavaScript
+````JavaScript
 
 import React, { useState, useEffect } from 'react';
 
@@ -1032,6 +1030,7 @@ function UserList() {
 }
 
 export default UserList;
+````
 Explanation:
 
 useState: To manage the users data, loading state, and any error.
@@ -1050,7 +1049,7 @@ Conditional Rendering: The component renders different UI based on loading, erro
 
 For sending data, you would typically attach the data to the body of the request and set the Content-Type header.
 
-JavaScript
+````JavaScript
 
 // Example for a POST request
 const createUser = async (userData) => {
@@ -1075,6 +1074,7 @@ const createUser = async (userData) => {
     setLoading(false);
   }
 };
+````
 Alternative Libraries:
 
 While fetch is good for basic cases, for more robust API interactions in larger applications, you might use:
@@ -1085,7 +1085,7 @@ React Query (TanStack Query): A powerful library for data fetching, caching, syn
 
 SWR (Stale-While-Revalidate): Another modern data fetching library with similar capabilities to React Query, focused on performance and real-time experiences.
 
-43. Different design patterns used in React?
+### 43. Different design patterns used in React?
 React itself encourages a component-based architecture, but within that, several design patterns emerge and are commonly used to organize code, manage state, and promote reusability.
 
 Component Pattern:
@@ -1138,7 +1138,7 @@ Where an object (subject) maintains a list of its dependents (observers) and not
 
 Choosing the right pattern depends on the specific problem you're trying to solve, the complexity of your application, and your team's preferences. Modern React development heavily favors Hooks and Context for most scenarios that previously relied on HOCs or Render Props.
 
-44. Context API vs. Redux
+### 44. Context API vs. Redux
 Both Context API and Redux are used for state management in React applications, allowing components to access data without prop drilling. However, they serve different purposes and have different complexities.
 
 Feature	React Context API	Redux (and similar libraries like Zustand, Jotai)
