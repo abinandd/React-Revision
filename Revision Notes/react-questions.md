@@ -754,6 +754,7 @@ useEffect(() => {
   console.log('Component mounted!');
   // Fetch data, set up subscriptions, etc.
 }, []);
+---
 
 ### 37. What is Strict Mode in React?
 
