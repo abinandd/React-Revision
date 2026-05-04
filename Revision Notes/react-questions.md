@@ -1,4 +1,4 @@
-### 1. What is React?
+### 1. What is React? 
 React is an open-source JavaScript library for building user interfaces (UIs), particularly single-page applications where data changes over time. It was developed by Facebook and is maintained by Facebook and a community of individual developers and companies. React allows developers to create large web applications that can change data without reloading the page. Its core philosophy revolves around declarative views, making the code more predictable and easier to debug.
 
 ### 2. What is useMemo?
